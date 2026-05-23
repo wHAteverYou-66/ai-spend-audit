@@ -12,11 +12,15 @@ export async function POST(req: Request) {
 
   const totalSavings = results.reduce((sum: number, r: any) => sum + r.monthlySavings, 0)
 
-  const { error } = await supabase.from("leads").insert({
+  console.log("Saving audit with ID:", auditId)
+
+  const { data, error } = await supabase.from("leads").insert({
     audit_id: auditId,
     audit_data: { inputs, useCase, teamSize, results },
     total_savings: totalSavings,
   })
+
+  console.log("Supabase response:", { data, error })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

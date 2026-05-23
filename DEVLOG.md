@@ -10,7 +10,6 @@
 
 **Plan for tomorrow:** Build the spend input form with all 8 AI tools.
 
-
 ## Day 2 — 2026-05-22
 
 **Hours worked:** 4

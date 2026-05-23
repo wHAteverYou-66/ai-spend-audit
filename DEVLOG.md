@@ -21,3 +21,15 @@
 **Blockers / what I'm stuck on:** Hit a syntax error in `layout.tsx` that temporarily broke the build. After fixing that, I encountered a 404 error upon form submission because it tries to redirect to `/audit/[id]`, which isn't built yet.
 
 **Plan for tomorrow:** Tomorrow I build the results page — the page that shows the audit breakdown, total savings, and the shareable URL. That's the most visual part of the whole project.
+
+## Day 3 — 2026-05-23
+
+**Hours worked:** 3
+
+**What I did:** Built the /audit/[id] results page with per-tool breakdown, hero savings display, Credex CTA, AI summary via Gemini, email capture with honeypot, and shareable URL. Fixed Supabase RLS issue blocking inserts. Fixed Next.js 15 params async issue. Fixed JSX arrow character errors.
+
+**What I learned:** How Next.js dynamic routes work. How Supabase RLS blocks inserts by default. How params must be awaited in Next.js 15.
+
+**Blockers / what I'm stuck on:** RLS issue took time to debug — fixed by disabling RLS via SQL editor.
+
+**Plan for tomorrow:** Write audit engine tests, set up GitHub Actions CI, fill in documentation files.

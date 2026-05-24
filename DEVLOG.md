@@ -33,3 +33,15 @@
 **Blockers / what I'm stuck on:** RLS issue took time to debug — fixed by disabling RLS via SQL editor.
 
 **Plan for tomorrow:** Write audit engine tests, set up GitHub Actions CI, fill in documentation files.
+
+## Day 4 — 2026-05-24
+
+**Hours worked:** 2
+
+**What I did:** Wrote 10 tests for the audit engine using Vitest. Set up GitHub Actions CI that runs lint and tests on every push to main. Filled in ARCHITECTURE.md with Mermaid system diagram, PROMPTS.md with full prompt documentation, and TESTS.md with test coverage table.
+
+**What I learned:** How to write unit tests with Vitest. How GitHub Actions workflows are structured.
+
+**Blockers / what I'm stuck on:** I'm stuck in github workflow part.
+
+**Plan for tomorrow:** Fill in GTM.md, ECONOMICS.md, LANDING_COPY.md, METRICS.md. Conduct user interviews. Polish the UI.

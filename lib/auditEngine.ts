@@ -101,68 +101,80 @@ export function runAudit(inputs: UserToolInput[], useCase: string, teamSize: num
     let monthlySavings = 0
     let reason = "Your current plan fits your usage well."
 
-    // Check if user is overpaying vs expected price for their plan
-    if (input.monthlySpend > expectedSpend * 1.1) {
+    // Cursor: Hobby is free for 1-2 users only
+    if (input.toolId === "cursor" && input.seats <= 2 && input.planName !== "Hobby") {
+      monthlySavings = currentPlan.pricePerUser * input.seats
+      recommendedPlan = "Hobby"
+      recommendedAction = "Downgrade to Hobby"
+      reason = `Cursor Hobby is free for individuals. With only ${input.seats} seat(s), you don't need a paid plan unless you need priority access.`
+    }
+
+    // Cursor: 3+ seats on Pro is correct — no recommendation
+    else if (input.toolId === "cursor" && input.seats > 2) {
+      recommendedAction = "No change needed"
+      reason = "Cursor Pro is the right plan for your team size."
+    }
+
+    // Claude Max: justified for research use case — no recommendation
+    else if (input.toolId === "claude" && input.planName === "Max" && useCase === "research") {
+      recommendedAction = "No change needed"
+      reason = "Claude Max is well-suited for heavy research workflows where context and usage limits matter."
+    }
+
+    // Claude Max: overkill for non-research
+    else if (input.toolId === "claude" && input.planName === "Max" && useCase !== "research") {
+      monthlySavings = (100 - 20) * input.seats
+      recommendedPlan = "Pro"
+      recommendedAction = "Downgrade to Pro"
+      reason = `Claude Max ($100/user) is designed for very heavy users. Pro ($20/user) covers most coding and writing workflows. Saves $${monthlySavings}/mo.`
+    }
+
+    // Check if user is overpaying vs expected price
+    else if (input.monthlySpend > expectedSpend * 1.1) {
       reason = `You appear to be paying $${input.monthlySpend}/mo but ${tool.label} ${input.planName} for ${input.seats} seats should cost $${expectedSpend}/mo. Review your billing.`
       monthlySavings = input.monthlySpend - expectedSpend
       recommendedAction = "Review billing"
     }
 
-    // Check if a cheaper plan from the same tool fits
-    const cheaperPlans = tool.plans
-      .filter((p) => p.pricePerUser < currentPlan.pricePerUser)
-      .sort((a, b) => b.pricePerUser - a.pricePerUser)
+    // GitHub Copilot: Enterprise overkill for small teams
+    else if (input.toolId === "github_copilot" && input.seats <= 3 && input.planName === "Enterprise") {
+      monthlySavings = (currentPlan.pricePerUser - 10) * input.seats
+      recommendedPlan = "Individual"
+      recommendedAction = "Downgrade to Individual"
+      reason = `Enterprise features (policy management, audit logs) are unnecessary for a team of ${input.seats}. Individual at $10/seat saves you $${monthlySavings}/mo.`
+    }
 
-    if (cheaperPlans.length > 0) {
-      const bestCheaper = cheaperPlans[0]
-      const saving = (currentPlan.pricePerUser - bestCheaper.pricePerUser) * input.seats
+    // ChatGPT: switch to Cursor for coding teams
+    else if (input.toolId === "chatgpt" && useCase === "coding" && input.seats >= 2) {
+      monthlySavings = Math.round(input.monthlySpend * 0.3)
+      recommendedPlan = "Cursor Pro"
+      recommendedAction = "Switch to Cursor"
+      reason = `For coding teams, Cursor Pro ($20/user) includes IDE integration and is purpose-built for developers. ChatGPT is general-purpose and costs more for this use case.`
+    }
 
-      // Cursor: if solo or duo, Hobby is free
-      if (input.toolId === "cursor" && input.seats <= 2 && input.planName !== "Hobby") {
-        monthlySavings = currentPlan.pricePerUser * input.seats
-        recommendedPlan = "Hobby"
-        recommendedAction = "Downgrade to Hobby"
-        reason = `Cursor Hobby is free for individuals. With only ${input.seats} seat(s), you don't need a paid plan unless you need priority access.`
-      }
+    // Windsurf Teams: small teams don't need Teams plan
+    else if (input.toolId === "windsurf" && input.planName === "Teams" && input.seats <= 3) {
+      monthlySavings = (35 - 15) * input.seats
+      recommendedPlan = "Pro"
+      recommendedAction = "Downgrade to Pro"
+      reason = `Windsurf Teams adds admin controls useful for larger orgs. For ${input.seats} people, Pro ($15/user) has the same AI features. Saves $${monthlySavings}/mo.`
+    }
 
-      // GitHub Copilot: individual is fine for small teams
-      else if (input.toolId === "github_copilot" && input.seats <= 3 && input.planName === "Enterprise") {
-        monthlySavings = (currentPlan.pricePerUser - 10) * input.seats
-        recommendedPlan = "Individual"
-        recommendedAction = "Downgrade to Individual"
-        reason = `Enterprise features (policy management, audit logs) are unnecessary for a team of ${input.seats}. Individual at $10/seat saves you $${monthlySavings}/mo.`
-      }
+    // Generic: suggest cheaper plan if saving > $10
+    else {
+      const cheaperPlans = tool.plans
+        .filter((p) => p.pricePerUser < currentPlan.pricePerUser)
+        .sort((a, b) => b.pricePerUser - a.pricePerUser)
 
-      // Claude: Max is overkill for most teams
-      else if (input.toolId === "claude" && input.planName === "Max" && useCase !== "research") {
-        monthlySavings = (100 - 20) * input.seats
-        recommendedPlan = "Pro"
-        recommendedAction = "Downgrade to Pro"
-        reason = `Claude Max ($100/user) is designed for very heavy users. Pro ($20/user) covers most coding and writing workflows. Saves $${monthlySavings}/mo.`
-      }
-
-      // ChatGPT: if primary use is coding, Cursor is better value
-      else if (input.toolId === "chatgpt" && (useCase === "coding") && input.seats >= 2) {
-        monthlySavings = Math.round(input.monthlySpend * 0.3)
-        recommendedPlan = "Cursor Pro"
-        recommendedAction = "Switch to Cursor"
-        reason = `For coding teams, Cursor Pro ($20/user) includes IDE integration and is purpose-built for developers. ChatGPT is general-purpose and costs more for this use case.`
-      }
-
-      // Windsurf Teams: small teams don't need Teams plan
-      else if (input.toolId === "windsurf" && input.planName === "Teams" && input.seats <= 3) {
-        monthlySavings = (35 - 15) * input.seats
-        recommendedPlan = "Pro"
-        recommendedAction = "Downgrade to Pro"
-        reason = `Windsurf Teams adds admin controls useful for larger orgs. For ${input.seats} people, Pro ($15/user) has the same AI features. Saves $${monthlySavings}/mo.`
-      }
-
-      // Generic: suggest cheaper plan if saving > $10
-      else if (saving > 10) {
-        monthlySavings = saving
-        recommendedPlan = bestCheaper.name
-        recommendedAction = `Downgrade to ${bestCheaper.name}`
-        reason = `${bestCheaper.name} plan covers the core features for your use case at $${bestCheaper.pricePerUser}/user vs $${currentPlan.pricePerUser}/user.`
+      if (cheaperPlans.length > 0) {
+        const bestCheaper = cheaperPlans[0]
+        const saving = (currentPlan.pricePerUser - bestCheaper.pricePerUser) * input.seats
+        if (saving > 10 && input.monthlySpend <= expectedSpend * 1.1) {
+          monthlySavings = saving
+          recommendedPlan = bestCheaper.name
+          recommendedAction = `Downgrade to ${bestCheaper.name}`
+          reason = `${bestCheaper.name} plan covers the core features for your use case at $${bestCheaper.pricePerUser}/user vs $${currentPlan.pricePerUser}/user.`
+        }
       }
     }
 

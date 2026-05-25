@@ -45,3 +45,15 @@
 **Blockers / what I'm stuck on:** I'm stuck in github workflow part.
 
 **Plan for tomorrow:** Fill in GTM.md, ECONOMICS.md, LANDING_COPY.md, METRICS.md. Conduct user interviews. Polish the UI.
+
+## Day 5 — 2026-05-25
+
+**Hours worked:** 2
+
+**What I did:** Filled in GTM.md with specific channels and first-100-users plan. Wrote unit economics in ECONOMICS.md with full conversion funnel math. Wrote LANDING_COPY.md and METRICS.md. Conducted 5 user interviews.
+
+**What I learned:** Thinking about CAC and LTV made the product feel more real. Take user interviews.
+
+**Blockers / what I'm stuck on:** Still need 5 more user interviews.
+
+**Plan for tomorrow:** Complete user interviews, polish UI, run Lighthouse audit, fill REFLECTION.md.

@@ -57,3 +57,15 @@
 **Blockers / what I'm stuck on:** Still need 5 more user interviews.
 
 **Plan for tomorrow:** Complete user interviews, polish UI, run Lighthouse audit, fill REFLECTION.md.
+
+## Day 6 — 2026-05-26
+
+**Hours worked:** 2
+
+**What I did:** Wrote REFLECTION.md with all 5 questions. Completed README.md 
+with screenshots, quick start, and decisions section. Added .env.example. 
+Ran Lighthouse audit — scores: Performance X, Accessibility X, Best Practices X.
+
+**Plan for tomorrow:** Final check of all required files, verify git log has 5+ 
+days of commits, re-test live URL, submit Google Form.
+

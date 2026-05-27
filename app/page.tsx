@@ -80,7 +80,7 @@ export default function Home() {
                 min={1}
                 value={teamSize}
                 onChange={(e) => setTeamSize(Number(e.target.value))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white placeholder-gray-400"
               />
             </div>
             <div>
@@ -88,7 +88,7 @@ export default function Home() {
               <select
                 value={useCase}
                 onChange={(e) => setUseCase(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white placeholder-gray-400"
               >
                 {USE_CASES.map((uc) => (
                   <option key={uc} value={uc}>
@@ -117,7 +117,7 @@ export default function Home() {
                       <select
                         value={inp.planName}
                         onChange={(e) => updateInput(tool.id, "planName", e.target.value)}
-                        className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm"
+                        className="w-full border border-gray-300 rounded-lg px-2 py-2 text-sm text-gray-900 bg-white"
                       >
                         {tool.plans.map((p) => (
                           <option key={p.name} value={p.name}>
@@ -133,7 +133,7 @@ export default function Home() {
                         min={0}
                         value={inp.seats}
                         onChange={(e) => updateInput(tool.id, "seats", Number(e.target.value))}
-                        className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm"
+                        className="w-full border border-gray-300 rounded-lg px-2 py-2 text-sm text-gray-900 bg-white"
                       />
                     </div>
                     <div>
@@ -143,7 +143,7 @@ export default function Home() {
                         min={0}
                         value={inp.monthlySpend}
                         onChange={(e) => updateInput(tool.id, "monthlySpend", Number(e.target.value))}
-                        className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm"
+                        className="w-full border border-gray-300 rounded-lg px-2 py-2 text-sm text-gray-900 bg-white"
                       />
                     </div>
                   </div>

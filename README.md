@@ -44,3 +44,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 >>>>>>> b5f986c (Initial commit from Create Next App)
 =======
 >>>>>>> 31a90fd806ab6af419e2fa1aa5f376257fc974b4
+
+## Screenshots
+
+![Form](public/screenshots/form.png)
+![Results](public/screenshots/result.png)
+![Email capture](public/screenshots/Screenshot%202026-05-27%20183215.png)

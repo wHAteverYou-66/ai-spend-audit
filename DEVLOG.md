@@ -64,8 +64,19 @@
 
 **What I did:** Wrote REFLECTION.md with all 5 questions. Completed README.md 
 with screenshots, quick start, and decisions section. Added .env.example. 
-Ran Lighthouse audit — scores: Performance X, Accessibility X, Best Practices X.
+Ran Lighthouse audit — scores: Performance 80, Accessibility 83, Best Practices 100.
 
 **Plan for tomorrow:** Final check of all required files, verify git log has 5+ 
 days of commits, re-test live URL, submit Google Form.
 
+## Day 7 — 2026-05-27
+
+**Hours worked:** 1
+
+**What I did:** Final review of all required files. Verified git history spans 5+ 
+calendar days. End-to-end tested live URL. 
+
+**What I learned:** Shipping a product in 7 days is mostly about prioritization — 
+knowing what to cut and what's non-negotiable.
+
+**Plan for tomorrow:** Wait for Round 2 results.
